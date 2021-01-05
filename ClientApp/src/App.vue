@@ -1,65 +1,107 @@
 <template>
-  <v-app>
-    <v-navigation-drawer
-      persistent
-      :mini-variant="miniVariant"
-      :clipped="clipped"
-      v-model="drawer"
-      enable-resize-watcher
-      fixed
-      app
-    >
-      <v-list>
-        <v-list-item value="true" v-for="(item, i) in items" :key="i" :to="item.link">
-          <v-list-item-action>
-            <v-icon v-html="item.icon"></v-icon>
-          </v-list-item-action>
-          <v-list-item-content>
-            <v-list-item-title v-text="item.title"></v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
-      </v-list>
-    </v-navigation-drawer>
-
-    <v-app-bar app :clipped-left="clipped" color="info" dark>
-      <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
-      <v-btn class="d-none d-lg-flex" icon @click.stop="miniVariant = !miniVariant">
-        <v-icon v-html="miniVariant ? 'mdi-chevron-right' : 'mdi-chevron-left'"></v-icon>
-      </v-btn>
-      <v-btn class="d-none d-lg-flex" icon @click.stop="clipped = !clipped">
-        <v-icon>mdi-web</v-icon>
-      </v-btn>
-      <v-toolbar-title v-text="title"></v-toolbar-title>
-      <v-spacer></v-spacer>
-    </v-app-bar>
-
-    <v-main>
-      <router-view />
-    </v-main>
-
-    <v-footer app>
-      <span>&nbsp;Software Ateliers&nbsp;&copy;&nbsp;2021</span>
-    </v-footer>
-  </v-app>
+  <div class="page">
+    <NavMenu />
+    <div class="main">
+      <div class="top-row px-4">
+        <a
+          href="https://github.com/SoftwareAteliers/asp-net-core-vue-starter"
+          target="_blank"
+          class="ml-md-auto"
+        >
+          About
+        </a>
+      </div>
+      <div class="content px-4">
+        <router-view />
+      </div>
+    </div>
+  </div>
 </template>
 
 <script lang="ts">
 import HelloWorld from '@/components/HelloWorld.vue'
+import NavMenu from '@/components/NavMenu.vue'
 import { Component, Vue } from 'vue-property-decorator'
 
 @Component({
-  components: { HelloWorld }
+  components: { HelloWorld, NavMenu }
 })
 export default class App extends Vue {
-  private clipped = true
-  private drawer = true
-  private miniVariant = false
-  private right = true
   private title = 'ASP.NET Core Vue Starter'
-  private items = [
-    { title: 'Home', icon: 'mdi-home', link: '/' },
-    { title: 'Counter', icon: 'mdi-gesture-tap', link: '/counter' },
-    { title: 'Fetch data', icon: 'mdi-download', link: '/fetch-data' }
-  ]
 }
 </script>
+
+<style scoped>
+.page {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.main {
+  flex: 1;
+}
+
+.sidebar {
+  background-image: linear-gradient(180deg, rgb(5, 39, 103) 0%, #3a0647 70%);
+}
+
+.top-row {
+  background-color: #f7f7f7;
+  border-bottom: 1px solid #d6d5d5;
+  justify-content: flex-end;
+  height: 3.5rem;
+  display: flex;
+  align-items: center;
+}
+
+.top-row ::v-deep a,
+.top-row .btn-link {
+  white-space: nowrap;
+  margin-left: 1.5rem;
+}
+
+.top-row a:first-child {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+@media (max-width: 640.98px) {
+  .top-row:not(.auth) {
+    display: none;
+  }
+
+  .top-row.auth {
+    justify-content: space-between;
+  }
+
+  .top-row a,
+  .top-row .btn-link {
+    margin-left: 0;
+  }
+}
+
+@media (min-width: 641px) {
+  .page {
+    flex-direction: row;
+  }
+
+  .sidebar {
+    width: 250px;
+    height: 100vh;
+    position: sticky;
+    top: 0;
+  }
+
+  .top-row {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+  }
+
+  .main > div {
+    padding-left: 2rem !important;
+    padding-right: 1.5rem !important;
+  }
+}
+</style>

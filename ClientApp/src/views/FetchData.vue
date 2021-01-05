@@ -1,45 +1,47 @@
 <template>
-  <v-container fluid>
-    <v-slide-y-transition mode="out-in">
-      <v-row>
-        <v-col>
-          <h1>Weather forecast</h1>
-          <p>This component demonstrates fetching data from the server.</p>
+  <div>
+    <h1>Weather forecast</h1>
+    <p>This component demonstrates fetching data from the server.</p>
 
-          <v-data-table
-            :headers="headers"
-            :items="forecasts"
-            hide-default-footer
-            :loading="loading"
-            class="elevation-1"
-          >
-            <template v-slot:progress>
-              <v-progress-linear color="blue" indeterminate></v-progress-linear>
-            </template>
-            <template v-slot:[`item.date`]="{ item }">
-              <td>{{ item.date | date }}</td>
-            </template>
-            <template v-slot:[`item.temperatureC`]="{ item }">
-              <v-chip :color="getColor(item.temperatureC)" dark>{{ item.temperatureC }}</v-chip>
-            </template>
-          </v-data-table>
-        </v-col>
-      </v-row>
-    </v-slide-y-transition>
+    <div v-if="loading">
+      <p><em>Loading...</em></p>
+    </div>
+    <table v-else class="table">
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Temp. (C)</th>
+          <th>Temp. (F)</th>
+          <th>Summary</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="(item, i) in forecasts" :key="i">
+          <td>{{ item.date | date }}</td>
+          <td>
+            <span :class="['p-2', 'rounded-pill', 'text-light', getColor(item.temperatureC)]">
+              {{ item.temperatureC }}
+            </span>
+          </td>
+          <td>{{ item.temperatureF }}</td>
+          <td>{{ item.summary }}</td>
+        </tr>
+      </tbody>
+    </table>
 
-    <v-alert :value="showError" type="error" v-text="errorMessage">
-      This is an error alert.
-    </v-alert>
+    <div v-if="showError" class="alert alert-danger" role="alert">
+      {{ errorMessage }}
+    </div>
 
-    <v-alert :value="showError" type="warning">
+    <div v-if="showError" class="alert alert-warning" role="alert">
       Are you sure you're using ASP.NET Core endpoint? (default at
       <a href="http://localhost:5000/fetch-data">http://localhost:5000</a>)
       <br />
       API call would fail with status code 404 when calling from Vue app (default at
       <a href="http://localhost:8080/fetch-data">http://localhost:8080</a>) without devServer proxy
       settings in vue.config.js file.
-    </v-alert>
-  </v-container>
+    </div>
+  </div>
 </template>
 
 <script lang="ts">
@@ -53,23 +55,17 @@ export default Vue.extend({
       loading: true,
       showError: false,
       errorMessage: 'Error while loading weather forecast.',
-      forecasts: [] as Forecast[],
-      headers: [
-        { text: 'Date', value: 'date' },
-        { text: 'Temp. (C)', value: 'temperatureC' },
-        { text: 'Temp. (F)', value: 'temperatureF' },
-        { text: 'Summary', value: 'summary' }
-      ]
+      forecasts: [] as Forecast[]
     }
   },
   methods: {
     getColor(temperature: number) {
       if (temperature < 0) {
-        return 'blue'
+        return 'badge bg-primary'
       } else if (temperature >= 0 && temperature < 30) {
-        return 'green'
+        return 'badge bg-success'
       } else {
-        return 'red'
+        return 'badge bg-danger'
       }
     },
     async fetchWeatherForecasts() {

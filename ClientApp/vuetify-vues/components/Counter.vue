@@ -4,8 +4,8 @@
       Current count (Vuex):
       <strong>{{ currentCount }}</strong>
     </p>
-    <button class="btn btn-primary mr-2" @click.prevent="increment">Increment</button>
-    <button class="btn btn-secondary" @click.prevent="reset">Reset</button>
+    <v-btn class="ma-2" color="info" @click.prevent="increment">Increment</v-btn>
+    <v-btn class="ma-2" color="info" @click.prevent="reset">Reset</v-btn>
   </div>
 </template>
 
