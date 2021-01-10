@@ -6,6 +6,12 @@
   </div>
 </template>
 
-<script setup lang="ts">
+<script lang="ts">
+import { Component, Vue } from 'vue-property-decorator'
 import Counter from '@/components/Counter.vue'
+
+@Component({
+  components: { Counter }
+})
+export default class CounterView extends Vue {}
 </script>

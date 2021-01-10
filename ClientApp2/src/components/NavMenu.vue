@@ -18,18 +18,21 @@
   </div>
 </template>
 
-<script setup lang="ts">
-import { ref, reactive } from 'vue'
+<script lang="ts">
+import { Component, Vue } from 'vue-property-decorator'
 
-const collapseNavMenu = ref(false)
-const items = reactive([
-  { title: 'Home', icon: 'oi oi-home', link: '/' },
-  { title: 'Counter', icon: 'oi oi-plus', link: '/counter' },
-  { title: 'Fetch data', icon: 'oi oi-list-rich', link: '/fetch-data' }
-])
+@Component
+export default class NavMenu extends Vue {
+  private collapseNavMenu = false
+  private items = [
+    { title: 'Home', icon: 'oi oi-home', link: '/' },
+    { title: 'Counter', icon: 'oi oi-plus', link: '/counter' },
+    { title: 'Fetch data', icon: 'oi oi-list-rich', link: '/fetch-data' }
+  ]
 
-const ToggleNavMenu = (): void => {
-  collapseNavMenu.value = !collapseNavMenu.value
+  ToggleNavMenu(): void {
+    this.collapseNavMenu = !this.collapseNavMenu
+  }
 }
 </script>
 
@@ -67,7 +70,7 @@ const ToggleNavMenu = (): void => {
   padding-bottom: 1rem;
 }
 
-.nav-item :deep(a) {
+.nav-item ::v-deep a {
   color: #d7d7d7;
   border-radius: 4px;
   height: 3rem;
@@ -76,12 +79,12 @@ const ToggleNavMenu = (): void => {
   line-height: 3rem;
 }
 
-.nav-item :deep(a.router-link-active) {
+.nav-item ::v-deep a.router-link-active {
   background-color: rgba(255, 255, 255, 0.25);
   color: white;
 }
 
-.nav-item :deep(a:hover) {
+.nav-item ::v-deep a:hover {
   background-color: rgba(255, 255, 255, 0.1);
   color: white;
 }

@@ -9,28 +9,17 @@
   </div>
 </template>
 
-<script lang="ts">
-import { Action, Getter } from 'vuex-class'
-import { Component, Vue } from 'vue-property-decorator'
-const namespace = 'counter'
+<script setup lang="ts">
+import { computed } from 'vue'
+import counterStore from '@/store/counterStore'
 
-@Component
-export default class Counter extends Vue {
-  @Getter('currentCount', { namespace })
-  private currentCount!: number
+const currentCount = computed(() => counterStore.count)
 
-  @Action('increment', { namespace })
-  private incrementCounter!: () => void
+const increment = (): void => {
+  counterStore.incr()
+}
 
-  @Action('reset', { namespace })
-  private resetCounter!: () => void
-
-  private increment() {
-    this.incrementCounter()
-  }
-
-  private reset() {
-    this.resetCounter()
-  }
+const reset = (): void => {
+  counterStore.reset()
 }
 </script>

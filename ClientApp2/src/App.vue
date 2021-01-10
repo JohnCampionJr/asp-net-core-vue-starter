@@ -18,8 +18,17 @@
   </div>
 </template>
 
-<script setup lang="ts">
+<script lang="ts">
+import HelloWorld from '@/components/HelloWorld.vue'
 import NavMenu from '@/components/NavMenu.vue'
+import { Component, Vue } from 'vue-property-decorator'
+
+@Component({
+  components: { HelloWorld, NavMenu }
+})
+export default class App extends Vue {
+  private title = 'ASP.NET Core Vue Starter'
+}
 </script>
 
 <style scoped>
@@ -46,7 +55,7 @@ import NavMenu from '@/components/NavMenu.vue'
   align-items: center;
 }
 
-.top-row :v-deep(a),
+.top-row ::v-deep a,
 .top-row .btn-link {
   white-space: nowrap;
   margin-left: 1.5rem;

@@ -17,7 +17,7 @@
       </thead>
       <tbody>
         <tr v-for="(item, i) in forecasts" :key="i">
-          <td>{{ date(item.date) }}</td>
+          <td>{{ item.date | date }}</td>
           <td>
             <span :class="['p-2', 'rounded-pill', 'text-light', getColor(item.temperatureC)]">
               {{ item.temperatureC }}
@@ -44,44 +44,43 @@
   </div>
 </template>
 
-<script setup lang="ts">
-import { ref, reactive, onMounted } from 'vue'
-import axios from 'axios'
+<script lang="ts">
+// an example of a Vue Typescript component using Vue.extend
+import Vue from 'vue'
 import { Forecast } from '../models/Forecast'
-import { format } from 'date-fns'
 
-const loading = ref(true)
-const showError = ref(false)
-const errorMessage = ref('')
-const forecasts = ref([] as Forecast[])
-
-const getColor = (temperature: number | undefined): string => {
-  if (temperature! < 0) {
-    return 'badge bg-primary'
-  } else if (temperature! >= 0 && temperature! < 30) {
-    return 'badge bg-success'
-  } else {
-    return 'badge bg-danger'
+export default Vue.extend({
+  data() {
+    return {
+      loading: true,
+      showError: false,
+      errorMessage: 'Error while loading weather forecast.',
+      forecasts: [] as Forecast[]
+    }
+  },
+  methods: {
+    getColor(temperature: number) {
+      if (temperature < 0) {
+        return 'badge bg-primary'
+      } else if (temperature >= 0 && temperature < 30) {
+        return 'badge bg-success'
+      } else {
+        return 'badge bg-danger'
+      }
+    },
+    async fetchWeatherForecasts() {
+      try {
+        const response = await this.$axios.get<Forecast[]>('api/WeatherForecast')
+        this.forecasts = response.data
+      } catch (e) {
+        this.showError = true
+        this.errorMessage = `Error while loading weather forecast: ${e.message}.`
+      }
+      this.loading = false
+    }
+  },
+  async created() {
+    await this.fetchWeatherForecasts()
   }
-}
-
-const date = (date: Date | undefined): string => {
-  return format(new Date(date!), 'eeee, dd MMMM')
-}
-
-const fetchWeatherForecasts = (): void => {
-  try {
-    axios.get<Forecast[]>('api/WeatherForecast').then((res) => {
-      forecasts.value = res.data
-      loading.value = false
-    })
-  } catch (e) {
-    showError.value = true
-    errorMessage.value = `Error while loading weather forecast: ${e.message}.`
-  }
-  loading.value = false
-}
-
-fetchWeatherForecasts()
-//loading.value = false
+})
 </script>
