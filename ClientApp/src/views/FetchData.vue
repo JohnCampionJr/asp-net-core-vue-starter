@@ -83,5 +83,4 @@ const fetchWeatherForecasts = (): void => {
 }
 
 fetchWeatherForecasts()
-//loading.value = false
 </script>
