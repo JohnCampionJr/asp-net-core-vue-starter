@@ -1,7 +1,5 @@
-//$primary: #28a745;
-
-@import '~bootstrap/scss/bootstrap';
-@import '~open-iconic/font/css/open-iconic-bootstrap.min.css';
+@import 'bootstrap/dist/css/bootstrap';
+@import 'open-iconic/font/css/open-iconic-bootstrap.min.css';
 
 html, body {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;

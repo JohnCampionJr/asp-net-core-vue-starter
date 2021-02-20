@@ -59,7 +59,7 @@
         },
         {
             "label": "vue-cli-serve",
-            "command": "npm",
+            "command": "pnpm",
             "type": "shell",
             "isBackground": true,
             "options": {
@@ -69,8 +69,7 @@
                 }
             },
             "args": [
-                "run",
-                "serve"
+                "dev"
             ],
             "presentation": {
                 "echo": false,
@@ -93,7 +92,7 @@
                   "background": {
                     "activeOnStart": true,
                     "beginsPattern": ".",
-                    "endsPattern": "App running at",
+                    "endsPattern": "dev server running at",
                   }
                 }
               ]

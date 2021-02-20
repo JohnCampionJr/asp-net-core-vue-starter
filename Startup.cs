@@ -1,3 +1,4 @@
+using System;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -72,6 +73,9 @@ namespace AspNetCoreVueStarter
             {
                 // To learn more about options for serving an Angular SPA from ASP.NET Core,
                 // see https://go.microsoft.com/fwlink/?linkid=864501
+                
+                // Be sure env variable is set on Mac
+                // export ASPNETCORE_ENVIRONMENT="Development" 
 
                 spa.Options.SourcePath = "ClientApp";
 
@@ -80,14 +84,18 @@ namespace AspNetCoreVueStarter
 
                     // run npm process with client app
                     if (mode == "start") {
-                        spa.UseVueCli(npmScript: "serve", port: port, forceKill: true, https: https);
+                        Console.WriteLine("Vue start mode");
+                        spa.UseVueCli(npmScript: "dev", port: port, forceKill: true, https: https);
                     }
 
                     // if you just prefer to proxy requests from client app, use proxy to SPA dev server instead,
                     // app should be already running before starting a .NET client:
                     // run npm process with client app
-                    if (mode == "attach") {
-                        spa.UseProxyToSpaDevelopmentServer($"{(https ? "https" : "http")}://localhost:{port}"); // your Vue app port
+                    if (mode == "attach")
+                    {
+                        var url = $"{(https ? "https" : "http")}://localhost:{port}";
+                        Console.WriteLine($"Vue Attach mode, url: {url}");
+                        spa.UseProxyToSpaDevelopmentServer(url); 
                     }
                 }
             });

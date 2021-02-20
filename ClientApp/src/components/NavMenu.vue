@@ -9,7 +9,7 @@
     <div :class="{ collapse: collapseNavMenu }" @click="ToggleNavMenu">
       <ul class="nav flex-column">
         <li class="nav-item px-3" v-for="(item, i) in items" :key="i">
-          <router-link class="nav-link" :to="item.link" exact>
+          <router-link class="nav-link" :to="item.link" >
             <span :class="item.icon" aria-hidden="true"></span> {{ item.title }}
           </router-link>
         </li>
@@ -24,8 +24,8 @@ import { ref, reactive } from 'vue'
 const collapseNavMenu = ref(false)
 const items = reactive([
   { title: 'Home', icon: 'oi oi-home', link: '/' },
-  { title: 'Counter', icon: 'oi oi-plus', link: '/counter' },
-  { title: 'Fetch data', icon: 'oi oi-list-rich', link: '/fetch-data' }
+  { title: 'Counter', icon: 'oi oi-plus', link: '/Counter' },
+  { title: 'Fetch data', icon: 'oi oi-list-rich', link: '/Fetch-Data' }
 ])
 
 const ToggleNavMenu = (): void => {
@@ -76,7 +76,7 @@ const ToggleNavMenu = (): void => {
   line-height: 3rem;
 }
 
-.nav-item :deep(a.router-link-active) {
+.nav-item :deep(a.router-link-exact-active) {
   background-color: rgba(255, 255, 255, 0.25);
   color: white;
 }
