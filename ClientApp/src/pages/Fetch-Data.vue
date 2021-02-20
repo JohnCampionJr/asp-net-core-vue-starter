@@ -1,30 +1,30 @@
 <template>
   <div>
-    <h1>Weather forecast</h1>
-    <p>This component demonstrates fetching data from the server.</p>
+    <h1 class="text-lg">Weather forecast</h1>
+    <p class="my-3">This component demonstrates fetching data from the server.</p>
 
     <div v-if="loading">
       <p><em>Loading...</em></p>
     </div>
-    <table v-else class="table">
+    <table v-else class="w-full">
       <thead>
-        <tr>
-          <th>Date</th>
-          <th>Temp. (C)</th>
-          <th>Temp. (F)</th>
-          <th>Summary</th>
+        <tr class="text-left border-t border-b-2">
+          <th class="w-1/4 p-3">Date</th>
+          <th class="w-1/4 p-3">Temp. (C)</th>
+          <th class="w-1/4 p-3">Temp. (F)</th>
+          <th class="w-1/4 p-3">Summary</th>
         </tr>
       </thead>
       <tbody>
-        <tr v-for="(item, i) in forecasts" :key="i">
-          <td>{{ date(item.date) }}</td>
-          <td>
-            <span :class="['p-2', 'rounded-pill', 'text-light', getColor(item.temperatureC)]">
+        <tr v-for="(item, i) in forecasts" :key="i" class="border-t">
+          <td class="p-3">{{ date(item.date) }}</td>
+          <td class="p-3">
+            <span :class="['p-2', 'rounded-pill', 'text-white', getColor(item.temperatureC)]">
               {{ item.temperatureC }}
             </span>
           </td>
-          <td>{{ item.temperatureF }}</td>
-          <td>{{ item.summary }}</td>
+          <td class="p-3">{{ item.temperatureF }}</td>
+          <td class="p-3">{{ item.summary }}</td>
         </tr>
       </tbody>
     </table>
@@ -38,17 +38,17 @@
       <a href="http://localhost:5000/fetch-data">http://localhost:5000</a>)
       <br />
       API call would fail with status code 404 when calling from Vue app (default at
-      <a href="http://localhost:8080/fetch-data">http://localhost:8080</a>) without devServer proxy
-      settings in vue.config.js file.
+      <a href="http://localhost:8080/fetch-data">http://localhost:8080</a>) without devServer proxy settings in
+      vue.config.js file.
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, onMounted } from 'vue'
+import { format } from 'date-fns'
+import { ref } from 'vue'
 import axios from 'axios'
 import { Forecast } from '../models/Forecast'
-import { format } from 'date-fns'
 
 const loading = ref(true)
 const showError = ref(false)
@@ -57,11 +57,11 @@ const forecasts = ref([] as Forecast[])
 
 const getColor = (temperature: number | undefined): string => {
   if (temperature! < 0) {
-    return 'badge bg-primary'
-  } else if (temperature! >= 0 && temperature! < 30) {
-    return 'badge bg-success'
+    return 'rounded bg-blue-500'
+  } else if (temperature! >= 0 && temperature! < 20) {
+    return 'rounded bg-green-600'
   } else {
-    return 'badge bg-danger'
+    return 'rounded bg-red-600'
   }
 }
 

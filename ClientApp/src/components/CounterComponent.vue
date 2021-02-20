@@ -1,6 +1,6 @@
 <template>
   <div>
-    <p>
+    <p class="my-3">
       Current count (Vuex):
       <strong>{{ currentCount }}</strong>
     </p>
